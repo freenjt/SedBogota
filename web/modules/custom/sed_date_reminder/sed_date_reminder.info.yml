@@ -1,0 +1,6 @@
+name: 'Date reminder for SED'
+type: module
+description: 'This module sends a mail to different accounts'
+core: 8.x
+package: 'Personal'
+

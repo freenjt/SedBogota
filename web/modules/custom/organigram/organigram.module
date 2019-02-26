@@ -1,0 +1,15 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: macbookpro
+ * Date: 2019-02-15
+ * Time: 16:19
+ */
+use Drupal\taxonomy\Entity\Term;
+function organigram_theme($existing, $type, $theme, $path) {
+    return [
+        'organigram' => [
+            'variables' => ['term_element' => NULL],
+        ],
+    ];
+}

@@ -1,0 +1,79 @@
+<?php
+
+use Drupal\Core\Database\Database;
+
+function sed_date_reminder_schema()
+{
+    $schema['sed_date_reminder'] = [
+        'description' => 'Information for send email automatically',
+        'fields' => [
+            'id' => [
+                'description' => 'Id of table',
+                'type' => 'serial',
+                'not null' => TRUE,
+            ],
+            'email' => [
+                'description' => 'Email where is sent the email',
+                'type' => 'varchar',
+                'length' => 500,
+                'not null' => TRUE,
+                'default' => '',
+            ],
+            'subject' => [
+                'description' => 'The subject of the email',
+                'type' => 'varchar',
+                'length' => 200,
+                'not null' => TRUE,
+                'default' => '',
+            ],
+            'message' => [
+                'description' => 'The message of the email',
+                'type' => 'varchar',
+                'not null' => TRUE,
+                'length' => 500,
+            ],
+            'month' => array(
+                'description' => 'month when it should send the message',
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0,
+            ),
+            'day' => [
+                'description' => 'Day when it should send the message',
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0,
+            ],
+            'next_execution_date' => [
+                'description' => 'Day when it should send the message',
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0,
+            ],
+        ],
+        'primary key' => [
+            'id',
+        ],
+        // For documentation purposes only; foreign keys are not created in the
+        // database.
+    ];
+    return $schema;
+}
+
+/**
+ * Add field next_execution_date in sed_date_reminder
+ */
+function sed_date_reminder_update_8001(&$sandbox){
+    $spec = array(
+        'description' => 'Day when it should send the message',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+    );
+    $schema = Database::getConnection()->schema();
+    $schema->addField('sed_date_reminder', 'next_execution_date', $spec);
+}

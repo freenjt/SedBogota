@@ -1,0 +1,5 @@
+sed_date_reminder.form:
+  route_name: sed_date_reminder.form
+  title: 'Add date reminder'
+  appears_on:
+    - sed_date_reminder.display

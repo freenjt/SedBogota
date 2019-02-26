@@ -1,0 +1,6 @@
+prueba-chart:
+  version: 1.x
+  js:
+    js/loader.js: {}
+  dependencies:
+    - core/jquery

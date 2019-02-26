@@ -1,0 +1,7 @@
+organigram.page:
+  path: '/organigram'
+  defaults:
+    _controller: '\Drupal\organigram\Controller\OrganigramController::content'
+    _title: 'Organigrama'
+  requirements:
+    _permission: 'access content'

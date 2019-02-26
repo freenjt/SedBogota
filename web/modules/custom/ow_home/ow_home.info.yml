@@ -1,0 +1,7 @@
+name: 'ow_home'
+type: module
+description: 'My Awesome Module'
+core: 8.x
+package: 'Personal'
+libraries:
+  - ow_home/prueba-chart

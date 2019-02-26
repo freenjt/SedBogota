@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Contains ow_home.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ow_home_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ow_home module.
+    case 'help.page.ow_home':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+function ow_home_page_attachments_alter(&$page) {
+    $page['#attached']['library'][] = 'ow_home/prueba-chart';
+}

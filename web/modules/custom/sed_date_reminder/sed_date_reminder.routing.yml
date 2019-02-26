@@ -1,0 +1,23 @@
+sed_date_reminder.display:
+  path: '/date-reminder'
+  defaults:
+    _controller: '\Drupal\sed_date_reminder\Controller\DateReminderList::displayTable'
+    _title: 'Date reminder'
+  requirements:
+    _permission: 'access content'
+
+sed_date_reminder.form:
+  path: '/date-reminder/manage'
+  defaults:
+    _title: 'Date reminder add'
+    _form: '\Drupal\sed_date_reminder\Form\DateReminderForm'
+  requirements:
+    _permission: 'access content'
+
+sed_date_reminder.delete_form:
+  path: '/date-reminder/delete/{id}'
+  defaults:
+    _title: 'Date reminder delete'
+    _form: '\Drupal\sed_date_reminder\Form\DateReminderDeleteForm'
+  requirements:
+    _permission: 'access content'

@@ -1,0 +1,7 @@
+name: 'Organigram'
+type: module
+description: 'This module render a view with an organigram'
+core: 8.x
+package: 'Personal'
+libraries:
+  - organigram/organigram-library

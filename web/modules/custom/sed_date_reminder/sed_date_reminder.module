@@ -1,0 +1,79 @@
+<?php
+
+use Drupal\Core\Render\Element\Html;
+
+/**
+ * Created by PhpStorm.
+ * User: macbookpro
+ * Date: 2019-02-18
+ * Time: 15:37
+ */
+/*
+ * Implements hook_cron
+ */
+function sed_date_reminder_cron()
+{
+    $connection = \Drupal::database();
+    $query = $connection->select('sed_date_reminder', 'sdr')
+        ->fields('sdr')
+        ->execute()
+        ->fetchAll();
+    $dateReminder = '';
+    $now_year = (int)date('Y');
+    foreach ($query as $key => $value) {
+        if (($value->next_execution_date == 0 || $value->next_execution_date == $now_year)) {
+            $dateReminder = ($value->month + 1) . '-' . ($value->day + 1);
+            $format = format_date(REQUEST_TIME, 'custom', 'm-d');
+            if ($value->month < 9) {
+                $dateReminder = '0' . $dateReminder;
+            }
+            \Drupal::logger('mail-log')->notice('dateReminder => ' . $dateReminder);
+            \Drupal::logger('mail-log')->notice('format => ' . $format);
+            if ($dateReminder == $format) {
+                $mailManager = \Drupal::service('plugin.manager.mail');
+                $module = 'sed_date_reminder';
+                $key = 'date_reminder'; // Replace with Your key
+                $to = $value->email;
+                $params['message'] = $value->message;
+                $params['title'] = $value->subject;
+                $langcode = \Drupal::currentUser()->getPreferredLangcode();
+                $send = true;
+
+                $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+                if ($result['result'] != true) {
+                    $message = t('There was a problem sending your email notification to @email.', array('@email' => $to));
+                    drupal_set_message($message, 'error');
+                    \Drupal::logger('mail-log')->error($message);
+                    return;
+                } else {
+
+                    $connection->update('sed_date_reminder')
+                        ->fields(array(
+                            'next_execution_date' => (int)($now_year + 1),
+                        ))
+                        ->condition('id', $value->id)
+                        ->execute();
+                }
+
+                $message = t('An email notification has been sent to @email ', array('@email' => $to));
+                drupal_set_message($message);
+                \Drupal::logger('mail-log')->notice($message);
+            }
+        }
+    }
+
+}
+
+function sed_date_reminder_mail($key, &$message, $params)
+{
+    $options = array(
+        'langcode' => $message['langcode'],
+    );
+    switch ($key) {
+        case 'date_reminder':
+            $message['from'] = \Drupal::config('system.site')->get('mail');
+            $message['subject'] = t('Your mail subject Here: @title', array('@title' => $params['title']), $options);
+            $message['body'][] = $params['message'];
+            break;
+    }
+}
